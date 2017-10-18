@@ -132,6 +132,7 @@
 #include <TArrayI.h>
 #include <TArrayD.h>
 #include <TArrayF.h>
+#include <TList.h>
 
 #include "BaseSteer.h"
 
@@ -185,6 +186,7 @@ void BaseSteer::SetValues(TString& block)
     TClass *myclass = this->IsA();
     TDataMember *thevar;
     TMethodCall *setter;
+    cout<<"Going to set Parameters"<<endl;
 
     while ( ( index=block.Index(";") ) >= 0 ) { // expressions left
         expression = block(0,index+1);
@@ -192,33 +194,30 @@ void BaseSteer::SetValues(TString& block)
 
             // split the expression into left hand side and right hand side
         type = SplitExpression(expression,variable,value);
-
         if ( type != 1 ) continue; // only assignments are treated so far
-
 	Bool_t setVariable = kFALSE;
         thevar = myclass->GetDataMember(variable);
-
         if (thevar) { // variable in this class
-	    setter = thevar->SetterMethod(myclass);
-	    //setter = thevar->SetterMethod();
-
+	  //setter = thevar->SetterMethod(myclass);
+	  TString methodSetName; 
+	  methodSetName.Form("Set%s", thevar->GetName()+1);
+	  setter = new  TMethodCall(myclass,methodSetName,value);
 	    if (setter) {
-	        if(value.BeginsWith("\"") && value.EndsWith("\"")){
-		    // work around for strings longer than CINT-limit: transfer pointer only
-  		    value[value.Length()-1] = '\0'; // ...but cut last and first '"'
-		    setter->Execute(this,Form("(const char*) %p", value.Data()+1));
-		} else {
-		    setter->Execute(this,value);
-		}
-		setVariable = kTRUE;
-	    }
+	      if(value.BeginsWith("\"") && value.EndsWith("\"")){
+		// work around for strings longer than CINT-limit: transfer pointer only
+		value[value.Length()-1] = '\0'; // ...but cut last and first '"'
+		setter->Execute(this,Form("(const char*) %p", value.Data()+1));
+	      } else {
+		setter->Execute(this,value);
+	      }
+	      setVariable = kTRUE;
+	      }
         } else {      // variable might be in base class
             TClass *base = myclass->GetBaseDataMember(variable);
             if (base) { // variable in a base class
                 thevar = base->GetDataMember(variable);
 		setter = thevar->SetterMethod(base);
 		//setter = thevar->SetterMethod();
-
 		if (setter) {
 		    if(value.BeginsWith("\"") && value.EndsWith("\"")){
 		        // work around for strings longer than CINT-limit: transfer pointer only

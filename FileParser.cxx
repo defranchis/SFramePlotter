@@ -241,6 +241,25 @@ void FileParser::BrowseFile()
     TIter nextkey( gDirectory->GetListOfKeys() );
     while ( (key = (TKey*)nextkey())) {
 
+        
+        // std::vector<TString> valid_names = {"PTTop","BoostedDoubleSecondaryVertexAK8","prunedmass","tau32","tau21","eta","PrimaryVertex","_0","_1","_2","_3","jetNTracks","nSV","z_ratio"};
+        // std::vector<TString> valid_names = {"PTTop","BoostedDoubleSecondaryVertexAK8","prunedmass","tau32","tau21","eta","PrimaryVertex"};
+        std::vector<TString> valid_names = {"PTTop","BoostedDoubleSecondaryVertexAK8","prunedmass","tau32","tau21","eta"};
+
+        TString name = key->GetName();
+        bool keepThis = false;
+
+        for (TString thisName: valid_names)
+            if (name.Contains(thisName)){
+                    keepThis = true;
+                    break;
+                }
+
+        if (!keepThis) continue;
+
+        // if ( !(name=="PTTop") && !(name=="BoostedDoubleSecondaryVertexAK8") && !(name=="prunedmass") && !(name=="tau32") && !(name=="tau21") 
+        //      && !(name=="eta") && !(name=="PrimaryVertex") && !(name=="muon_jet_PT")) continue;
+
       TObject *obj = key->ReadObj();
 
       if ( obj->IsA()->InheritsFrom( TH1::Class() ) ) {
@@ -372,22 +391,22 @@ TH1* FileParser::Rebin(TH1* hist, TString dirname)
     rebinned->SetTitle("HT [GeV]");
     return rebinned;
 
-  } else if (name.BeginsWith("mu_0top0btag_mttbar")) {
-    
-    TH1* rebinned = hist->Rebin(2);
-    rebinned->GetXaxis()->SetRangeUser(0,3500);
-    return rebinned;
-
-  } else if (name.BeginsWith("mu_0top1btag_mttbar")) {
-    
-    TH1* rebinned = hist->Rebin(2);
-    rebinned->GetXaxis()->SetRangeUser(0,3500);
-    return rebinned;
-
-  } else if (name.BeginsWith("mu_1top_mttbar")) {
+  } else if (name.BeginsWith("subCSV")) {
     
     TH1* rebinned = hist->Rebin(4);
-    rebinned->GetXaxis()->SetRangeUser(0,3500);
+    //rebinned->GetXaxis()->SetRangeUser(0,3500);
+    return rebinned;
+
+  } else if (name.BeginsWith("MassTop_SD")) {
+    
+    TH1* rebinned = hist->Rebin(2);
+    //rebinned->GetXaxis()->SetRangeUser(0,3500);
+    return rebinned;
+
+  } else if (name.BeginsWith("tau32")) {
+    
+    TH1* rebinned = hist->Rebin(2);
+    //rebinned->GetXaxis()->SetRangeUser(0,3500);
     return rebinned;
 
   } else if (name.BeginsWith("el_0top0btag_mttbar")) {

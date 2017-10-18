@@ -41,19 +41,19 @@ void ele_trig_eff()
   TGraphAsymmErrors* deff = get_eff("Data", obs, hist, tot_eff, tot_err);
   TGraphAsymmErrors* mceff = get_eff("TTbar", obs, hist, tot_eff, tot_err);
   TGraphAsymmErrors* ratio = get_ratio(deff, mceff);
-  draw_ratio(ratio, prefix + "ratio_electron_pT.eps", "Data / MC");
+  draw_ratio(ratio, prefix + "ratio_electron_pT.eps", "data/MC");
 
   TString hist = "eta";
   TGraphAsymmErrors* deff = get_eff("Data", obs, hist, tot_eff, tot_err);
   TGraphAsymmErrors* mceff = get_eff("TTbar", obs, hist, tot_eff, tot_err);
   TGraphAsymmErrors* ratio = get_ratio(deff, mceff);
-  draw_ratio(ratio, prefix + "ratio_electron_eta.eps", "Data / MC");
+  draw_ratio(ratio, prefix + "ratio_electron_eta.eps", "data/MC");
 
   TString hist = "isolation";
   TGraphAsymmErrors* deff = get_eff("Data", obs, hist, tot_eff, tot_err);
   TGraphAsymmErrors* mceff = get_eff("TTbar", obs, hist, tot_eff, tot_err);
   TGraphAsymmErrors* ratio = get_ratio(deff, mceff);
-  draw_ratio(ratio, prefix + "ratio_electron_isolation.eps", "Data / MC");
+  draw_ratio(ratio, prefix + "ratio_electron_isolation.eps", "data/MC");
   
   
 

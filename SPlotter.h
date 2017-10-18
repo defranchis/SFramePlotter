@@ -9,6 +9,7 @@
 #include <TObject.h>
 #include <TCanvas.h>
 #include <TPostScript.h>
+#include <TPDF.h>
 #include "SHist.h"
 
 class SPlotter
@@ -102,7 +103,8 @@ class SPlotter
   TObjArray* m_ScaleSysUncName; 
 
   TCanvas* m_can; 
-  TPostScript* m_ps; 
+  /* TPostScript* m_ps;  */
+  TPDF* m_ps; 
   TString m_ps_name;
 
   TPad* m_pad1;

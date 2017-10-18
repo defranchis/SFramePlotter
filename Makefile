@@ -52,7 +52,7 @@ OBJS         += $(TMPDIR)/FileParser.o
 DICTFILE     = SteerPlotter_Dict.cxx
 DICTFILE     += BaseSteer_Dict.cxx
 DICTFILE     += SHist_Dict.cxx
-
+CXXFLAGS     += --std=c++11
 
 all: setup Plots
 

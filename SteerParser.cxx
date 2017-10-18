@@ -766,7 +766,8 @@ Bool_t SteerParser::CreateSteering(TString& theclassname, TString& objectname, T
     RemoveWhiteSpace(block);
     
     myclass = gROOT->GetClass(theclassname);
-
+    cout<<objectname<<endl;
+    cout<<nameSpace<<endl;
     if ( myclass ) {
         BaseSteer *mysteer = static_cast<BaseSteer*>( myclass->New() );
         mysteer->SetValues(block);
